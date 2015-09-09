@@ -69,7 +69,7 @@ if beautiful.wallpaper then
 end
 
 tags = {}
-tags[1] = awful.tag({ 'browser', 'skype', 'telegram', 'db', 'xmind', 'mail', 7, 8, 9 }, 1, layouts[1])
+tags[1] = awful.tag({ 'browser', 'skype', 'telegram', 'db', 'xmind', 'mail', 'soundcloud', 'slack', 9 }, 1, layouts[1])
 tags[2] = awful.tag({ 'term', 'ide', 'editor', 4, 5, 6, 7, 8, 9 }, 2, layouts[10])
 
 myawesomemenu = {
@@ -281,10 +281,10 @@ clientkeys = awful.util.table.join(
             c.maximized_vertical   = not c.maximized_vertical
         end)
 )
-
 -- Bind all key numbers to tags.
 -- Be careful: we use keycodes to make it works on any keyboard layout.
 -- This should map on the top row of your keyboard, usually 1 to 9.
+local numpad_map = { 87, 88, 89, 83, 84, 85, 79, 80, 81 }
 for i = 1, 9 do
     globalkeys = awful.util.table.join(globalkeys,
         -- View tag only.
@@ -296,6 +296,16 @@ for i = 1, 9 do
                            awful.tag.viewonly(tag)
                         end
                   end),
+--        numpad
+        awful.key({ modkey }, "#" .. numpad_map[i],
+                function ()
+                    local screen = mouse.screen
+                    local tag = awful.tag.gettags(screen)[i]
+                    if tag then
+                        awful.tag.viewonly(tag)
+                    end
+                end),
+
         -- Toggle tag.
         awful.key({ modkey, "Control" }, "#" .. i + 9,
                   function ()
@@ -360,6 +370,8 @@ awful.rules.rules = {
     { rule = { class = "XMind" }, properties = { tag = tags[1][5], floating = true, maximized_vertical = true, maximized_horizontal = true } },
     { rule = { class = "telegram" }, properties = { tag = tags[1][3], floating = false } },
     { rule = { class = "Thunderbird" }, properties = { tag = tags[1][6], floating = false } },
+    { rule = { class = "Spotify" }, properties = { tag = tags[1][7], floating = false } },
+    { rule = { class = "Scudcloud" }, properties = { tag = tags[1][8], floating = false } },
 }
 -- }}}
 
